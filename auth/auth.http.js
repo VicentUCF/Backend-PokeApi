@@ -17,7 +17,7 @@ const loginUser = async (req, res) =>{
       return res.status(401).json({ message: "invalid credentials" });
     }
     //si son validas generamos un JWT i lo devolvemos
-    let user = await usersController.getUserIdFormUserName(req.body.user);
+    let user = await usersController.getUserIdFromUserName(req.body.user);
     const token = jwt.sign({ userId: user.userId }, "secretPassword");
     res.status(200).json({ token: token });
          

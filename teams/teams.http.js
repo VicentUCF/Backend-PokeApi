@@ -27,6 +27,7 @@ const getTeamFromUser = async (req, res) => {
 
 const addPokemonToTeam = async (req, res) => {
   let pokemonName = req.body.name.toLowerCase();
+
   let [pokeApiError, pokeAapiResponse] = 
   await to(axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`));
 
@@ -50,10 +51,15 @@ const addPokemonToTeam = async (req, res) => {
 };
 
 
- const deletePokemonFromTeam = (req, res) => {
-    teamsController.deletePokemonAt(req.user.userId, req.params.pokeid);
-    res.status(200).send();
- }
+const deletePokemonFromTeam = async (req, res) => {
+  let [err, resp] = await to(
+    teamsController.deletePokemonAt(req.user.userId, req.params.pokeid)
+  );
+  if(err) {
+    return res.status(400).json({ message: err });
+  }
+  res.status(200).send();
+};
 
  exports.getTeamFromUser = getTeamFromUser;
  exports.setTeamToUser = setTeamToUser;
